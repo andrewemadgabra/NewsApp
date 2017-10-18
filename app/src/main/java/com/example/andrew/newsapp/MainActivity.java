@@ -139,6 +139,11 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                     for (int i = 0; i < jsonarray.length(); i++) {
                         JSONObject newsJsonObject = jsonarray.getJSONObject(i);
                         String webtitle = "", type = "", weburl = "", sectioname = "";
+                        if (newsJsonObject.has("webTitle")) {
+                            webtitle = newsJsonObject.getString(KEY_TITLE);
+                        } else {
+                            webtitle = "No found Title";
+                        }
                         if (newsJsonObject.has("type")) {
                             type = newsJsonObject.getString(KEY_type);
                         } else {
@@ -149,18 +154,13 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                         } else {
                             sectioname = "No found section name";
                         }
-                        if (newsJsonObject.has("webTitle")) {
-                            webtitle = newsJsonObject.getString(KEY_TITLE);
-                        } else {
-                            webtitle = "No found Title";
-                        }
                         if (newsJsonObject.has("webUrl")) {
                             weburl = newsJsonObject.getString(web);
                         } else {
                             weburl = "Not found WebUrl";
                         }
 
-                        News news = new News(webtitle, type, sectioname, weburl);
+                        News news = new News(webtitle,type,sectioname,weburl);
                         newsArrayList.add(news);
                     }
                 } else {

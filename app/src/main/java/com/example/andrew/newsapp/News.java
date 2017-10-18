@@ -10,7 +10,7 @@ public class News {
     private String Weburl;
     private String SectionName;
 
-    public News(String title, String type, String SectionName, String Weburl) {
+    public News(String title, String type,String SectionName,String Weburl) {
         this.title = title;
         this.type = type;
         this.Weburl = Weburl;
