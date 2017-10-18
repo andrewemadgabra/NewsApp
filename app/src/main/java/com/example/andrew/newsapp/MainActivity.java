@@ -55,9 +55,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     News news = task.getItem(i);
-                    Uri titlenewsUri = Uri.parse(news.getTitle());
-                    Uri section = Uri.parse(news.getSectionName());
-                    Uri typeUri = Uri.parse(news.gettype());
+                    Uri titlenewsUri;
+                    Uri section;
+                    Uri typeUri;
                     Uri webnewsUri = Uri.parse(news.getWeburl());
                     titlenewsUri=webnewsUri;
                     section=webnewsUri;

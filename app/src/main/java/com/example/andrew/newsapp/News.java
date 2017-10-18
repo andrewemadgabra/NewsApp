@@ -25,11 +25,11 @@ public class News {
         return type;
     }
 
-    public String getWeburl() {
-        return Weburl;
-    }
-
     public String getSectionName() {
         return SectionName;
+    }
+
+    public String getWeburl() {
+        return Weburl;
     }
 }
