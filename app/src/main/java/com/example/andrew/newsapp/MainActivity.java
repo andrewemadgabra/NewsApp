@@ -29,17 +29,22 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<ArrayList<News>> {
     private static ArrayList<News> newsArrayList = new ArrayList<>();
-    private static final String urlopen = "http://content.guardianapis.com/search?q=debates&api-key=test";
+    private static final String urlopen = " https://content.guardianapis.com/search?q=android&show-tags=contributor&order-by=relevance&api-key=test";
     private static final int READ_TIMEOUT = 10000;
     private static final String KEY_TITLE = "webTitle";
     private static final String KEY_type = "type";
     private static final String web = "webUrl";
+    private static final String date = "webPublicationDate";
     private static final String sectionname = "sectionName";
+    private static final String articles = "webTitle";
     private ListView listView;
     private NewsAdapter task;
 
@@ -59,9 +64,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                     Uri section;
                     Uri typeUri;
                     Uri webnewsUri = Uri.parse(news.getWeburl());
-                    titlenewsUri=webnewsUri;
-                    section=webnewsUri;
-                    typeUri=webnewsUri;
+                    titlenewsUri = webnewsUri;
+                    section = webnewsUri;
+                    typeUri = webnewsUri;
                     if (news.getWeburl() == null || TextUtils.isEmpty(news.getWeburl())) {
                         Toast.makeText(MainActivity.this, "No Found Link", Toast.LENGTH_SHORT).show();
                     } else {
@@ -138,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                     JSONArray jsonarray = jsonobject.getJSONArray("results");
                     for (int i = 0; i < jsonarray.length(); i++) {
                         JSONObject newsJsonObject = jsonarray.getJSONObject(i);
-                        String webtitle = "", type = "", weburl = "", sectioname = "";
+                        String webtitle = "", type = "", weburl = "", sectioname = "", dateformate = "", article = "";
                         if (newsJsonObject.has("webTitle")) {
                             webtitle = newsJsonObject.getString(KEY_TITLE);
                         } else {
@@ -159,8 +164,30 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                         } else {
                             weburl = "Not found WebUrl";
                         }
-
-                        News news = new News(webtitle,type,sectioname,weburl);
+                        if (newsJsonObject.has("webPublicationDate")) {
+                            String DATES;
+                            DATES = newsJsonObject.getString(date);
+                            SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd");
+                            Date date = dt.parse(DATES);
+                            dateformate = dt.format(date);
+                        } else {
+                            dateformate = "Not found Date";
+                        }
+                        JSONArray jsonarraytags = newsJsonObject.getJSONArray("tags");
+                        if (jsonarraytags.isNull(0)) {
+                            article = "Not Found Tags";
+                        }
+                        for (int j = 0; j < jsonarraytags.length(); j++) {
+                            // Get a single news at position i within the list of news
+                            JSONObject currentTag = jsonarraytags.getJSONObject(j);
+                            String a = new String("");
+                            if (currentTag.has("webTitle")) {
+                                article = currentTag.getString(articles);
+                            } else {
+                                article = "Not found author";
+                            }
+                        }
+                        News news = new News(webtitle, type, sectioname, weburl, dateformate, article);
                         newsArrayList.add(news);
                     }
                 } else {
@@ -169,6 +196,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 return newsArrayList;
             } catch (JSONException e) {
                 Log.e("Error", "Problem in the book JSON", e);
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
             return null;
         }
