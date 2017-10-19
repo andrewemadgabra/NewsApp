@@ -60,24 +60,12 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     News news = task.getItem(i);
-                    Uri titlenewsUri;
-                    Uri section;
-                    Uri typeUri;
                     Uri webnewsUri = Uri.parse(news.getWeburl());
-                    titlenewsUri = webnewsUri;
-                    section = webnewsUri;
-                    typeUri = webnewsUri;
                     if (news.getWeburl() == null || TextUtils.isEmpty(news.getWeburl())) {
                         Toast.makeText(MainActivity.this, "No Found Link", Toast.LENGTH_SHORT).show();
                     } else {
                         Intent intent = new Intent(Intent.ACTION_VIEW, webnewsUri);
                         startActivity(intent);
-                        Intent title = new Intent(Intent.ACTION_VIEW, titlenewsUri);
-                        startActivity(title);
-                        Intent sections = new Intent(Intent.ACTION_VIEW, section);
-                        startActivity(sections);
-                        Intent types = new Intent(Intent.ACTION_VIEW, typeUri);
-                        startActivity(types);
                     }
                 }
             });
