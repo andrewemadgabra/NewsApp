@@ -167,7 +167,6 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                         }
                         for (int j = 0; j < jsonarraytags.length(); j++) {
                             JSONObject currentTag = jsonarraytags.getJSONObject(j);
-                            String a = new String("");
                             if (currentTag.has("webTitle")) {
                                 article = currentTag.getString(articles);
                             } else {
